@@ -3,7 +3,7 @@ import pprint as pp
 import xlrd
 import math
 
-workbook = xlrd.open_workbook("Dataset.xlsx")
+workbook = xlrd.open_workbook('Dataset.xlsx')
 dataset = workbook.sheet_by_index(0)
 controlData = []
 testData = []
@@ -53,31 +53,31 @@ def tinggi (x):
 
 def Fuzzification (crispData):
     return {
-        "low"  : rendah (crispData),
-        "mid"  : sedang (crispData),
-        "high" : tinggi (crispData)
+        'low'  : rendah (crispData),
+        'mid'  : sedang (crispData),
+        'high' : tinggi (crispData)
     }
 
 def Inteference (fuzzyData):
     return {
-        "Y":   (fuzzyData[0]["low"] and fuzzyData[1]["high"]) 
-            or (fuzzyData[0]["high"] and fuzzyData[1]["low"])
-            or (fuzzyData[0]["mid"] and fuzzyData[1]["mid"])
-            or (fuzzyData[0]["high"] and fuzzyData[1]["mid"])
-            or (fuzzyData[0]["high"] and fuzzyData[1]["high"]),
-        "T":   (fuzzyData[0]["low"] and fuzzyData[1]["low"]) 
-            or (fuzzyData[0]["low"] and fuzzyData[1]["mid"])
-            or (fuzzyData[0]["mid"] and fuzzyData[1]["low"])
-            or (fuzzyData[0]["mid"] and fuzzyData[1]["high"])
+        'Y':   (fuzzyData[0]['low'] and fuzzyData[1]['high']) 
+            or (fuzzyData[0]['high'] and fuzzyData[1]['low'])
+            or (fuzzyData[0]['mid'] and fuzzyData[1]['mid'])
+            or (fuzzyData[0]['high'] and fuzzyData[1]['mid'])
+            or (fuzzyData[0]['high'] and fuzzyData[1]['high']),
+        'T':   (fuzzyData[0]['low'] and fuzzyData[1]['low']) 
+            or (fuzzyData[0]['low'] and fuzzyData[1]['mid'])
+            or (fuzzyData[0]['mid'] and fuzzyData[1]['low'])
+            or (fuzzyData[0]['mid'] and fuzzyData[1]['high'])
     }
 
 def Defuzzification (fuzzyData):
-    return ((fuzzyData["Y"] * 50) + (fuzzyData["T"] * 80)) / (fuzzyData["Y"] + fuzzyData["T"])
+    return ((fuzzyData['Y'] * 50) + (fuzzyData['T'] * 80)) / (fuzzyData['Y'] + fuzzyData['T'])
 
 def evalData (dataset):
     fuzzyData = []
     for data in dataset:
-        fuzzyData.append ([Fuzzification (data["writtenScore"]), Fuzzification (data["InterviewScore"])])
+        fuzzyData.append ([Fuzzification (data['writtenScore']), Fuzzification (data['InterviewScore'])])
     
     pp.pprint(fuzzyData)
 
@@ -125,6 +125,7 @@ if __name__ == '__main__':
     # plt.plot([x for x in range (low - interval, mid + interval)], [sigmoid (x, low - interval, mid + interval) for x in range (low - interval, mid + interval)])
     # plt.plot([x for x in range (mid - interval, 100)], [sigmoidUp(x, mid - interval, 100) for x in range(mid - interval, 100)])
     # plt.show()
+    
     print()
 
     accuracy = 0
