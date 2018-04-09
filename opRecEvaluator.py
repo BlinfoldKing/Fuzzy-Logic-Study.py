@@ -11,10 +11,10 @@ testData = []
 
 #thresshold
 
-mid  = 65
-low  = 40
+mid  = 70
+low  = 30
 
-interval = 0.5
+interval = 10
 
 def dist (a, b):
     return b - a
@@ -72,7 +72,7 @@ def Inteference (fuzzyData):
     }
 
 def Defuzzification (fuzzyData):
-    return ((fuzzyData['Y'] * 50) + (fuzzyData['T'] * 80)) / (fuzzyData['Y'] + fuzzyData['T'])
+    return ((fuzzyData['Y'] * 70) + (fuzzyData['T'] * 30)) / (fuzzyData['Y'] + fuzzyData['T'])
 
 def evalData (dataset):
     fuzzyData = []
@@ -91,7 +91,8 @@ def evalData (dataset):
     for data in InterData:
         res.append(Defuzzification(data))
     
-    return ['Y' if (x >= 50) else 'T' for x in res]
+    print(res)
+    return ['Y' if (x > 50) else 'T' for x in res]
 
 
 if __name__ == '__main__':
