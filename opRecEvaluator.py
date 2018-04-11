@@ -11,7 +11,7 @@ testData = []
 
 #thresshold
 
-mid  = 70
+mid  = 80
 low  = 30
 
 interval = 10
@@ -92,7 +92,7 @@ def evalData (dataset):
         res.append(Defuzzification(data))
     
     print(res)
-    return ['Y' if (x > 50) else 'T' for x in res]
+    return ['Y' if (x >= 50) else 'T' for x in res]
 
 
 if __name__ == '__main__':
