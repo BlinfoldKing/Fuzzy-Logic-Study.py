@@ -64,11 +64,11 @@ def Inteference (fuzzyData):
             or (fuzzyData[0]['high'] and fuzzyData[1]['low'])
             or (fuzzyData[0]['mid'] and fuzzyData[1]['mid'])
             or (fuzzyData[0]['high'] and fuzzyData[1]['mid'])
-            or (fuzzyData[0]['high'] and fuzzyData[1]['high']),
+            or (fuzzyData[0]['high'] and fuzzyData[1]['high'])
+            or (fuzzyData[0]['mid'] and fuzzyData[1]['high']),
         'T':   (fuzzyData[0]['low'] and fuzzyData[1]['low']) 
             or (fuzzyData[0]['low'] and fuzzyData[1]['mid'])
             or (fuzzyData[0]['mid'] and fuzzyData[1]['low'])
-            or (fuzzyData[0]['mid'] and fuzzyData[1]['high'])
     }
 
 def Defuzzification (fuzzyData):
