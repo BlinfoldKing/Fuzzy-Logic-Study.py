@@ -72,7 +72,7 @@ def Inteference (fuzzyData):
     }
 
 def Defuzzification (fuzzyData):
-    return ((fuzzyData['Y'] * 70) + (fuzzyData['T'] * 30)) / (fuzzyData['Y'] + fuzzyData['T'])
+    return ((fuzzyData['Y'] * 70) + (fuzzyData['T'] * 30)) // (fuzzyData['Y'] + fuzzyData['T'])
 
 def evalData (dataset):
     fuzzyData = []
@@ -92,7 +92,7 @@ def evalData (dataset):
         res.append(Defuzzification(data))
     
     print(res)
-    return ['Y' if (x >= 50) else 'T' for x in res]
+    return ['Y' if (math.floor(x) >= 50.0) else 'T' for x in res]
 
 
 if __name__ == '__main__':
