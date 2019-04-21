@@ -3,16 +3,27 @@ import pprint as pp
 import xlrd
 import math
 
-workbook = xlrd.open_workbook('Dataset.xlsx')
-dataset = workbook.sheet_by_index(0)
+dataset = []
 controlData = []
 testData = []
+
+import csv
+
+with open('input_data.csv', mode='r') as csv_file:
+    csv_reader = csv.DictReader(csv_file)
+    line_count = 0
+    for row in csv_reader:
+        if line_count == 0:
+            line_count += 1
+        print(row)
+        dataset.append(row)
+        line_count += 1
 
 
 #thresshold
 
-mid  = 80
-low  = 30
+mid  = 85
+low  = 60
 
 interval = 10
 
@@ -40,7 +51,7 @@ def sigmoidDown (x, a, b):
         return 0
 
 def sigmoid (x, min, max):
-    return sigmoidUp(x, min, min + (dist(min, max) / 2)) if (x < min + dist(min, max) / 2) else sigmoidDown(x, min + (dist(min, max) / 2), max) 
+    return sigmoidUp(x, min, min + (dist(min, max) / 2)) if (x < min + dist(min, max) / 2) else sigmoidDown(x, min + (dist(min, max) / 2), max)
 
 def rendah (x):
     return sigmoidDown (x, 0, low + interval)
@@ -78,7 +89,6 @@ def evalData (dataset):
     fuzzyData = []
     for data in dataset:
         fuzzyData.append ([Fuzzification (data['writtenScore']), Fuzzification (data['InterviewScore'])])
-    
     pp.pprint(fuzzyData)
 
     InterData = []
@@ -90,43 +100,29 @@ def evalData (dataset):
     res = []
     for data in InterData:
         res.append(Defuzzification(data))
-    
     print(res)
     return ['Y' if (math.floor(x) >= 50.0) else 'T' for x in res]
 
 
 if __name__ == '__main__':
-    
     # initialize control dataset
-    for i in range (0, 18):
+    for i in range (0, len(dataset)):
         controlData.append ({
             'id': i,
-            'writtenScore': dataset.cell (i + 2, 2).value,
-            'InterviewScore': dataset.cell (i + 2, 3).value,
-            'result': dataset.cell (i + 2, 4).value
+            'writtenScore': float(dataset[i]["Tes Kompetensi"]),
+            'InterviewScore': float(dataset[i]["Kepribadian"]),
+            'result': "Y" if int(dataset[i]["Diterima"]) == 1 else "T"
         })
+    print(len(controlData))
+    testData = controlData[20:]
+    controlData = controlData[:20]
 
     print ('control dataset : ')
     pp.pprint (controlData)
-    
-    # # initialize test dataset
-    # for i in range (0, 10):
-    #     testData.append ({
-    #         'id': i,
-    #         'writtenScore': dataset.cell (i + 2, 7).value,
-    #         'InterviewScore': dataset.cell (i + 2, 8).value,
-    #         'result': None
-    #     })
 
     print ('\ntest dateset : ')
 
     pp.pprint (testData)
-
-    # plt.plot([x for x in range (0, low + interval)], [sigmoidDown (x, 0, low + interval) for x in range (0, low + interval)])
-    # plt.plot([x for x in range (low - interval, mid + interval)], [sigmoid (x, low - interval, mid + interval) for x in range (low - interval, mid + interval)])
-    # plt.plot([x for x in range (mid - interval, 100)], [sigmoidUp(x, mid - interval, 100) for x in range(mid - interval, 100)])
-    # plt.show()
-    
     print()
 
     accuracy = 0
@@ -138,5 +134,19 @@ if __name__ == '__main__':
     print (result)
     print ([x['result'] for x in controlData])
     print ('accuracy ' + str((accuracy / 18) * 100))
+
+    result = evalData(testData)
+    print("\ntest data result: ")
+    print(result)
+    with open('output_data.csv', mode='w') as output_file:
+        output_writer = csv.writer(output_file, delimiter=",", quotechar='\"', quoting=csv.QUOTE_MINIMAL)
+        for r in result:
+            output_writer.writerow(["YA" if r == "Y" else "TIDAK"])
+
+    plt.plot([x for x in range (0, low + interval)], [sigmoidDown (x, 0, low + interval) for x in range (0, low + interval)])
+    plt.plot([x for x in range (low - interval, mid + interval)], [sigmoid (x, low - interval, mid + interval) for x in range (low - interval, mid + interval)])
+    plt.plot([x for x in range (mid - interval, 100)], [sigmoidUp(x, mid - interval, 100) for x in range(mid - interval, 100)])
+    plt.show()
+
 
 
