@@ -1,2 +1,6 @@
 # Fuzzy-Logic-Study.py
-A training repo to understand Fuzzy Logic (Implemented it Python 3)
+
+## How to run
+1. install matplotlib with pip
+2. install tktinker (dependency of matplotlib)
+3. run ```python3 opRecEvaluator.py```
